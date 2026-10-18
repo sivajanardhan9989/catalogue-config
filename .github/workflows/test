@@ -1,0 +1,41 @@
+# name: Update Image Version
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: 'Environment to deploy to'
+#         required: true
+#         default: 'dev'
+#         type: choice
+#         options:
+#           - dev
+#           - uat
+#           - sit
+#           - prod
+#       imageVersion:
+#         description: 'New Docker Image Version / Tag'
+#         required: true
+#         type: string
+
+# jobs:
+#   update-values:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+
+#       - name: Update values file
+#         run: |
+#           sed -i "s/imageVersion: .*/imageVersion: \"${{ inputs.imageVersion }}\"/" values-${{ inputs.environment }}.yaml
+
+#       - name: Commit and Push Changes
+#         run: |
+#           git config --global user.name "github-actions[bot]"
+#           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+#           git add values-${{ inputs.environment }}.yaml
+#           git commit -m "chore(deps): update ${{ inputs.environment }} imageVersion to ${{ inputs.imageVersion }} [skip ci]" || echo "No changes to commit"
+#           git push
